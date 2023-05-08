@@ -98,7 +98,7 @@ load_songplays_table = LoadFactOperator(
 )
 
 """
-Creation of a task and using the arguments found in the the load_dimension.py file"
+Creation of a task and using the arguments found in the the load_dimension.py file as well as stating which SQL query to use when loading the dimension tables and the insert mode
 
 """
 
@@ -139,7 +139,7 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 """
-Creation of a task and using the arguments found in the the data_quality.py file"
+Creation of a task and using the arguments found in the the data_quality.py file as well as "
 
 """
 run_quality_checks = DataQualityOperator(
