@@ -12,7 +12,7 @@ from helpers import SqlQueries
 
 default_args = {
     'owner': 'SoniaBarbosa',
-    'start_date': datetime(2019, 1, 12)
+    'start_date': datetime(2019, 1, 12),
     'email_on_retry': False,
     'retries':3,
     'retry_delay': timedelta(minutes=5),
