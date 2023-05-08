@@ -104,22 +104,38 @@ Creation of a task and using the arguments found in the the load_dimension.py fi
 
 load_user_dimension_table = LoadDimensionOperator(
     task_id='Load_user_dim_table',
-    dag=dag
+    dag=dag,
+    table='users',
+    redshift_conn_id='redshift',
+    sql_query=SqlQueries.users_table_insert,
+    insert_mode='truncate'
 )
 
 load_song_dimension_table = LoadDimensionOperator(
     task_id='Load_song_dim_table',
-    dag=dag
+    dag=dag,
+    table='songs',
+    redshift_conn_id='redshift',
+    sql_query=SqlQueries.song_table_insert,
+    insert_mode='truncate'
 )
 
 load_artist_dimension_table = LoadDimensionOperator(
     task_id='Load_artist_dim_table',
-    dag=dag
+    dag=dag,
+    table='artists',
+    redshift_conn_id='redshift',
+    sql_query=SqlQueries.artist_table_insert,
+    insert_mode='truncate'
 )
 
 load_time_dimension_table = LoadDimensionOperator(
     task_id='Load_time_dim_table',
-    dag=dag
+    dag=dag,
+    table='time',
+    redshift_conn_id='redshift',
+    sql_query=SqlQueries.time_table_insert,
+    insert_mode='truncate'
 )
 
 """
