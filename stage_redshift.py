@@ -103,11 +103,5 @@ The formatted_sql is the SQL query that will copy the data from S3 by  using the
         )
         redshift.run(formatted_sql)
    
-          
-
-
-
-
-
 
 
