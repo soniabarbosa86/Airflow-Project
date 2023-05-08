@@ -77,25 +77,28 @@ stage_events_to_redshift = StageToRedshiftOperator(
 )
 
 """
-This operator performs the same steps as the operator above but for the song data
+Creation of a task and using the arguments found in the the stage_redshift.py file"
 
 """
 stage_songs_to_redshift = StageToRedshiftOperator(
     task_id='Stage_songs',
     dag=dag,
-    table="staging_songs",
-    redshift_conn_id="redshift",
-    aws_credentials_id="aws_credentials",
-    s3_bucket="udacity-dend",
-    s3_key="song_data",
-    song_json_path = "s3://udacity-dend/song_data"
-    
-)
+  )
+ 
+"""
+Creation of a task and using the arguments found in the the load_fact.py file"
+
+"""
 
 load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     dag=dag
 )
+
+"""
+Creation of a task and using the arguments found in the the load_dimension.py file"
+
+"""
 
 load_user_dimension_table = LoadDimensionOperator(
     task_id='Load_user_dim_table',
@@ -117,12 +120,23 @@ load_time_dimension_table = LoadDimensionOperator(
     dag=dag
 )
 
+"""
+Creation of a task and using the arguments found in the the data_quality.py file"
+
+"""
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag
 )
 
+"""
+Dummy Operator used to indicate that that the DAG run has ended"
+"""
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
+
+"""
+Ordering of the tasks
+"""
 
 Begin_execution >> Stage_events
 Begin_execution >> Stage_songs
