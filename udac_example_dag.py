@@ -139,12 +139,15 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 """
-Creation of a task and using the arguments found in the the data_quality.py file as well as "
+Creation of a task and using the arguments found in the the data_quality.py file as well as stating which SQL query to use when loading the fact table and the insert mode  "
 
 """
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
-    dag=dag
+    dag=dag,
+    redshift_conn_id='redshift',
+    sql_query=SqlQueries.songplay_table_insert,
+    insert_mode='append'
 )
 
 """
