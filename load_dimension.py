@@ -1,6 +1,7 @@
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
+from helpers.sql_queries import SqlQueries
 
 class LoadDimensionOperator(BaseOperator):
     """
@@ -9,7 +10,7 @@ class LoadDimensionOperator(BaseOperator):
     Default parameters of this operator:
     - redshift_conn_id: The Airflow connection ID for Redshift
     - table:  The name of the target dimension table in Redshift
-    -sql_query: The SQL query to execute to extract the data from the staging table and transform it for the target            dimension table
+    -sql_queries: The SQL query to execute to extract the data from the staging table and transform     it for the target dimension table
     -append_data: Flag that indicates whether the data should be appended to the table or replaced
     - *args: Variable length argument list
     - **kwargs: Arbitrary keyword arguments
@@ -21,13 +22,25 @@ class LoadDimensionOperator(BaseOperator):
     def __init__(self,
                  redshift_conn_id = "",
                  table = "",
-                 
+                 sql_query = "",
+                 append_data = truncate,
                  *args, **kwargs):
+                 
+                
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
-        # Map params here
-        # Example:
-        # self.conn_id = conn_id
+        super.redshift_conn_id = redshift_conn_id
+        super.table = table
+        super.sql_query = sql_query
+        super.append_data = append_data
 
     def execute(self, context):
-        self.log.info('LoadDimensionOperator not implemented yet')
+        redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
+        if self.insert_mode == "truncate":
+            self.log.info(f'Truncating {self.table} dimension table')
+            redshift.run(f'TRUNCATE TABLE {self.table}')
+        self.log.info(f'Loading data into {self.table} dimension table')
+        redshift_hook.run(self.sql_query)
+        self.log.info(f'{self.table} dimension table loaded successfully')
+        
+        
