@@ -25,10 +25,11 @@ class LoadDimensionOperator(BaseOperator):
                  sql_query = "",
                  append_data = truncate,
                  *args, **kwargs):
-"""   
-Pass the arguments that were passed above              
+        
+        """   
+        Pass the arguments that were passed above              
 
-"""
+        """
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
         super.redshift_conn_id = redshift_conn_id
@@ -36,11 +37,11 @@ Pass the arguments that were passed above
         super.sql_query = sql_query
         super.append_data = append_data
 
-  """
-  This execute method runs the LoadDimensionOperator. As the insert method is truncate it log a message indicating that the dimension table will be truncated as well as truncate the dimension table before loading the data and logging this info.
-  
-"""
-        
+    """
+      This execute method runs the LoadDimensionOperator. As the insert method is truncate it log a message indicating that the dimension table will be truncated as well as truncate the dimension table before loading the data and logging this info.
+
+    """
+
         
     def execute(self, context):
         redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
