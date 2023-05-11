@@ -139,15 +139,25 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 """
-Creation of a task and using the arguments found in the the data_quality.py file as well as stating which SQL query to use when loading the fact table and the insert mode  "
+Creation of a task containing a list of data quality checks. Each check consists of 2 keys: 
+- check_sql: the SQL query
+- expected_result: the expected result of the query
 
 """
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag,
-    redshift_conn_id='redshift',
-    sql_query=SqlQueries.songplay_table_insert,
-    insert_mode='append'
+    dq_checks=[
+        { 'check_sql': 'SELECT COUNT(*) FROM public.songplays WHERE userid IS NULL', 'expected_result': 0 }, 
+        { 'check_sql': 'SELECT COUNT(DISTINCT "level") FROM public.songplays', 'expected_result': 2 },
+        { 'check_sql': 'SELECT COUNT(*) FROM public.artists WHERE name IS NULL', 'expected_result': 0 },
+        { 'check_sql': 'SELECT COUNT(*) FROM public.songs WHERE title IS NULL', 'expected_result': 0 },
+        { 'check_sql': 'SELECT COUNT(*) FROM public.users WHERE first_name IS NULL', 'expected_result': 0 },
+        { 'check_sql': 'SELECT COUNT(*) FROM public."time" WHERE weekday IS NULL', 'expected_result': 0 },
+        { 'check_sql': 'SELECT COUNT(*) FROM public.songplays sp LEFT OUTER JOIN public.users u ON u.userid = sp.userid WHERE u.userid IS NULL', \
+         'expected_result': 0 }
+    ],
+    redshift_conn_id="redshift"
 )
 
 """
