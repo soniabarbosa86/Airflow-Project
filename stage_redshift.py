@@ -48,12 +48,14 @@ Arguments:
                  ignore_headers=1,
                  json_format="",
                  *args, **kwargs):
-                 
+        
  """
  Pass the arguments that were passed above
  
- """
-
+ """     
+        
+        
+        
         
         super(StageToRedshiftOperator, self).__init__(*args, **kwargs)
         self.redshift_conn_id = redshift_conn_id
@@ -64,6 +66,12 @@ Arguments:
         self.delimiter = delimiter
         self.jason_format = json_format
         self.ignore_headers = ignore_headers
+        
+                 
+
+
+        
+        
         
 """
 Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
