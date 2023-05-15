@@ -28,22 +28,20 @@ class DataQualityOperator(BaseOperator):
         """
         
         for check in self.dq_checks:
-        sql = check.get('check_sql')
-        expected_result = check.get('expected_result')
+            sql = check.get('check_sql')
+            expected_result = check.get('expected_result')
         """
         This part of the exectute process checks whether any rows or columns were returned. If not an error will be logged.
         """
         records = redshift.get_records(sql)
         if len(records) < 1 or len(records[0]) <1:
-            raise ValueError(f'Data quality check failed. {sql} returned no results.")
+            raise ValueError(f'Data quality check failed. {sql} returned no results.')
  
         """
         This part of the process compares the actual result to the expected result defined in dq_checks. If this is not the case an error will be logged.
         """
         actual_result = records[0][0]
         if actual_result != expected_result:
-            raise ValueError(f"Data quality check failed. {sql} returned {actual_result} but expected {expected_result}.")
+            raise ValueError(f'Data quality check failed. {sql} returned {actual_result} but expected {expected_result}.')
         
-        self.log.info(f"Data quality check passed for {sql}")
-                             
-                             
+        self.log.info(f'Data quality check passed for {sql}')
