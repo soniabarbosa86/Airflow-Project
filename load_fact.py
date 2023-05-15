@@ -18,7 +18,7 @@ class LoadFactOperator(BaseOperator):
                  redshift_conn_id='',
                  table='',
                  sql_query='',
-                 insert_mode = append,
+                 append_only = False,
                  *args, **kwargs):
                  
         """
@@ -30,7 +30,7 @@ class LoadFactOperator(BaseOperator):
         self.redshift_conn_id = redshift_conn_id
         self.sql_query = sql_query
         self.table = table
-        self.insert_mode = insert_mode
+        self.append_only = append_only
         
         
  
@@ -40,7 +40,7 @@ class LoadFactOperator(BaseOperator):
         The LoadFactOperator will connect to the Redshift cluster and as the insert_mode is append, it will log a message stating that the data will be loaded and it will also run an INSERT INTO command and also a SQL query to select which data to be inserted
         """
         postgres = PostgresHook(postgres_conn_id=self.redshift_conn_id)
-        if self.insert_mode == append:
+        if not self.append_only:
             self.log.info(f'Load fact table {self.table}')
         postgres.run(f'INSERT INTO {self.table} {self.sql_query}')
             
