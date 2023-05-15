@@ -46,7 +46,7 @@ class LoadDimensionOperator(BaseOperator):
 
         """
         redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
-        if self.insert_mode == "truncate":
+        if self.append_data == "truncate":
             self.log.info(f'Truncating {self.table} dimension table')
             redshift.run(f'TRUNCATE TABLE {self.table}')
         self.log.info(f'Loading data into {self.table} dimension table')
