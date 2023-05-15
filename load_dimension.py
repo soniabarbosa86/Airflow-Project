@@ -50,5 +50,5 @@ class LoadDimensionOperator(BaseOperator):
             self.log.info(f'Truncating {self.table} dimension table')
             redshift.run(f'TRUNCATE TABLE {self.table}')
         self.log.info(f'Loading data into {self.table} dimension table')
-        redshift_hook.run(self.sql_query)
+        redshift.run(self.sql_query)
         self.log.info(f'{self.table} dimension table loaded successfully')
