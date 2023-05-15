@@ -10,8 +10,8 @@ class LoadDimensionOperator(BaseOperator):
     Default parameters of this operator:
     - redshift_conn_id: The Airflow connection ID for Redshift
     - table:  The name of the target dimension table in Redshift
-    -sql_queries: The SQL query to execute to extract the data from the staging table and transform     it for the target dimension table
-    -append_data: Flag that indicates whether the data should be appended to the table or truncated     meaning emptied
+    -sql_queries: The SQL query to execute to extract the data from the staging table and transform it for the target dimension table
+    -insert_mode: Flag that indicates whether the data should be appended to the table or truncated meaning emptied
     - *args: Variable length argument list
     - **kwargs: Arbitrary keyword arguments
     """
