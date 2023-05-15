@@ -30,30 +30,30 @@ class DataQualityOperator(BaseOperator):
     def execute(self, context):
         redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
 
-    """
-    for loop that iterates each data quality check by using get method to retrieve the SQL query and expected_result keys.
+        """
+        for loop that iterates each data quality check by using get method to retrieve the SQL query and expected_result keys.
 
-    """
+        """
         
         for check in self.dq_checks_
         sql = check.get('check_sql')
         expected_result = check.get('expected_result')
 
-    """
-    This part of the exectute process checks whether any rows or columns were returned. If not an error will be logged.
-    """
+        """
+        This part of the exectute process checks whether any rows or columns were returned. If not an error will be logged.
+        """
 
         records = redshift_hook.get_records(sql)
         if len(records) < 1 or len(records[0]) <1:
             raise ValueError(f'Data quality check failed. {sql} returned no results.")
  
-     """
-     This part of the process compares the actual result to the expected result defined in dq_checks. If this is not the case an error will be logged.
+        """
+        This part of the process compares the actual result to the expected result defined in dq_checks. If this is not the case an error will be logged.
 
-     """
+        """
         actual_result = records[0][0]
         if actual_result != expected_result:
-            raise ValueError(f"Data quality check failed. {sql} returned {actual_result} but                     expected {expected_result}.")
+            raise ValueError(f"Data quality check failed. {sql} returned {actual_result} but expected {expected_result}.")
         
         self.log.info(f"Data quality check passed for {sql}")
                              
