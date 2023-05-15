@@ -14,8 +14,8 @@ The parameters are as follows:
 - copy_sql: SQL statement that copies from S3 to Redshift.
 
     """
-    ui_color = '#358140', 
-    template_fields = ("s3_key")
+    ui_color = '#358140'
+    template_fields = ("s3_key",)
     copy_sql = """
         COPY {}
         FROM '{}'
@@ -62,11 +62,10 @@ The parameters are as follows:
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
         self.delimiter = delimiter
-        self.jason_format = json_format
+        self.json_format = json_format
         self.ignore_headers = ignore_headers
-        
-    
-        def execute(self, context):
+     
+    def execute(self, context):
             
             """
             Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
@@ -90,21 +89,26 @@ The parameters are as follows:
             The s3_path represents the path to the object being copied.
             The formatted_sql is the SQL query that will copy the data from S3 by  using the format method to replace the placeholders in the copy_sql query with real values and the run via a PostGres hook.
             """
+            
             self.log.info("Staging data from S3 to Redshift")
-            self.log.info(f"{num_rows} rows affected by SQL query")
             rendered_key = self.s3_key.format(**context)
             s3_path = "s3://{}/{}".format(self.s3_bucket, rendered_key)
-            formatted_sql = S3ToRedshiftOperator.copy_sql.format(
+            formatted_sql = StageToRedshiftOperator.copy_sql(
                 self.table,
                 s3_path,
                 credentials.access_key,
                 credentials.secret_key,
-                self.ignore_headers,
-                self.delimiter
+                "auto",
+                "us-west-2",
+                self.json_format,
+                self.ignore_headers
+                
             )
             redshift.run(formatted_sql)
 
-
+    
+    
+        
 
 
 
