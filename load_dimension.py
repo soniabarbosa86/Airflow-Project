@@ -32,10 +32,10 @@ class LoadDimensionOperator(BaseOperator):
         """
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
-        super.redshift_conn_id = redshift_conn_id
-        super.table = table
-        super.sql_query = sql_query
-        super.append_only = append_only
+        self.redshift_conn_id = redshift_conn_id
+        self.table = table
+        self.sql_query = sql_query
+        self.append_only = append_only
 
    
 
@@ -46,7 +46,7 @@ class LoadDimensionOperator(BaseOperator):
 
         """
         redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
-        if self.append_only == "True":
+        if self.append_only == True:
             self.log.info(f'Truncating {self.table} dimension table')
             redshift.run(f'TRUNCATE TABLE {self.table}')
         self.log.info(f'Loading data into {self.table} dimension table')
