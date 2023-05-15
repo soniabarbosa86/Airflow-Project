@@ -25,17 +25,17 @@ class StageToRedshiftOperator(BaseOperator):
         IGNORE HEADER '{}'
     """
 
-"""
-Arguments:
-- redshift_conn_id: Connection ID for the Redshift database
-- aws_credentials: Connection ID for the AWS credentials
-- table: name of the table where the data will be loaded to
-- s3_bucket: name of the S3 bucket where the data is stored
-- s3_key: key of the s3 object to load into Redshift
-- delimiter: delimiter used in the data file
-- ignore_headers: the number of header rows to ignore
-- json_format: specifies the json format for the data that will be copied
-"""
+    """
+    Arguments:
+    - redshift_conn_id: Connection ID for the Redshift database
+    - aws_credentials: Connection ID for the AWS credentials
+    - table: name of the table where the data will be loaded to
+    - s3_bucket: name of the S3 bucket where the data is stored
+    - s3_key: key of the s3 object to load into Redshift
+    - delimiter: delimiter used in the data file
+    - ignore_headers: the number of header rows to ignore
+    - json_format: specifies the json format for the data that will be copied
+    """
     
     @apply_defaults
     def __init__(self,
@@ -49,10 +49,10 @@ Arguments:
                  json_format="",
                  *args, **kwargs):
         
- """
- Pass the arguments that were passed above
+    """
+    Pass the arguments that were passed above
  
- """     
+    """     
         
         
         
@@ -72,31 +72,31 @@ Arguments:
 
         
         
-        
-"""
-Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
-"""
+    
 
     def execute(self, context):
+        """
+        Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
+        """
         aws_hook = AwsHook(self.aws_credentials_id)
         credentials = aws_hook.get_credentials()
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
 
-"""
-Log information informing that the operator is being executed as well as logging when the data is being cleared from the destination redshift table in order to ensure that the destination table is empty and also delete all data from the destination table. 
-"""
+        """
+        Log information informing that the operator is being executed as well as logging when the data is being cleared from the destination redshift table in order to ensure that the destination table is empty and also delete all data from the destination table. 
+        """
 
 
         self.log.info('StageToRedshiftOperator not implemented yet')
         self.log.info("Clearing data from destination Redshift table")
         redshift.run("DELETE FROM {}".format(self.table))
 
-"""
-Information when the operator is staging the data from S3 to Redshift. 
-The rendered_key is a variable that allows the operator to load data from a different S3 object for each DAG run. 
-The s3_path represents the path to the object being copied.
-The formatted_sql is the SQL query that will copy the data from S3 by  using the format method to replace the placeholders in the copy_sql query with real values and the run via a PostGres hook.
-"""
+        """
+        Information when the operator is staging the data from S3 to Redshift. 
+        The rendered_key is a variable that allows the operator to load data from a different S3 object for each DAG run. 
+        The s3_path represents the path to the object being copied.
+        The formatted_sql is the SQL query that will copy the data from S3 by  using the format method to replace the placeholders in the copy_sql query with real values and the run via a PostGres hook.
+        """
         self.log.info("Staging data from S3 to Redshift")
         self.log.info(f"{num_rows} rows affected by SQL query")
         rendered_key = self.s3_key.format(**context)
