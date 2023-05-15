@@ -37,13 +37,14 @@ class LoadDimensionOperator(BaseOperator):
         super.sql_query = sql_query
         super.append_data = append_data
 
-    """
-      This execute method runs the LoadDimensionOperator. As the insert method is truncate it log a message indicating that the dimension table will be truncated as well as truncate the dimension table before loading the data and logging this info.
-
-    """
+   
 
         
     def execute(self, context):
+        """
+        This execute method runs the LoadDimensionOperator. As the insert method is truncate it log a message indicating that the dimension table will be truncated as well as truncate the dimension table before loading the data and logging this info.
+
+        """
         redshift=PostgresHook (postgres_conn_id=self.redshift_conn_id)
         if self.insert_mode == "truncate":
             self.log.info(f'Truncating {self.table} dimension table')
