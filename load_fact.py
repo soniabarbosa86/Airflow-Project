@@ -44,6 +44,3 @@ class LoadFactOperator(BaseOperator):
             self.log.info(f'Load fact table {self.table}')
         redshift.run(f'INSERT INTO {self.table} {self.sql_query}')
     
-        
-            
-        
