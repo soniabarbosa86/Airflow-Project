@@ -27,13 +27,13 @@ class DataQualityOperator(BaseOperator):
         for loop that iterates each data quality check by using get method to retrieve the SQL query and expected_result keys.
         """
         
-        for check in self.dq_checks_
+        for check in self.dq_checks:
         sql = check.get('check_sql')
         expected_result = check.get('expected_result')
         """
         This part of the exectute process checks whether any rows or columns were returned. If not an error will be logged.
         """
-        records = redshift_hook.get_records(sql)
+        records = redshift.get_records(sql)
         if len(records) < 1 or len(records[0]) <1:
             raise ValueError(f'Data quality check failed. {sql} returned no results.")
  
