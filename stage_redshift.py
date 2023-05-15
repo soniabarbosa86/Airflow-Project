@@ -66,7 +66,7 @@ The parameters are as follows:
         self.ignore_headers = ignore_headers
         
     
-     def execute(self, context):
+        def execute(self, context):
             
             """
             Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
@@ -103,6 +103,12 @@ The parameters are as follows:
                 self.delimiter
             )
             redshift.run(formatted_sql)
+
+
+
+
+
+
 
 
 
