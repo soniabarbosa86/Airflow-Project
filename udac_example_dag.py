@@ -107,7 +107,7 @@ load_user_dimension_table = LoadDimensionOperator(
     dag=dag,
     table='users',
     redshift_conn_id='redshift',
-    sql_query=SqlQueries.users_table_insert,
+    sql_query=SqlQueries.user_table_insert,
     insert_mode='truncate'
 )
 
