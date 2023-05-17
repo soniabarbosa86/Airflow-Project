@@ -85,6 +85,14 @@ Creation of a task and using the arguments found in the the stage_redshift.py fi
 stage_songs_to_redshift = StageToRedshiftOperator(
     task_id='Stage_songs',
     dag=dag,
+    aws_credentials_id='aws_credentials',
+    redshift_conn_id='redshift',
+    table='staging_songs',
+    s3_bucket='udacity-dend',
+    s3_key='song_data/A/A/A',
+    copy_json_option='auto',
+    region='us-west-2'
+
   )
  
 """
@@ -94,7 +102,12 @@ Creation of a task and using the arguments found in the the load_fact.py file"
 
 load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
-    dag=dag
+    dag=dag,
+    redshift_conn_id="redshift",
+    aws_credentials_id='aws_credentials',
+    table="songplays",
+    sql=SqlQueries.songplay_table_insert,
+    append_only=False
 )
 
 """
