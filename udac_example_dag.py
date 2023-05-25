@@ -182,16 +182,16 @@ end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 Ordering of the tasks
 """
 
-Begin_execution >> Stage_events
-Begin_execution >> Stage_songs
-Stage_events >> Load_songplays_fact_table
-Stage_songs >> Load_songplays_fact_table
-Load_songplays_fact_table >> Load_song_dim_table
-Load_songplays_fact_table >> Load_user_dim_table
-Load_songplays_fact_table >> Load_artist_dim_table
-Load_songplays_fact_table >> Load_time_dim_table
-Load_song_dim_table >> Run_data_quality_checks
-Load_user_dim_table >> Run_data_quality_checks
-Load_artist_dim_table >> Run_data_quality_checks
-Load_time_dim_table >> Run_data_quality_checks
-Run_data_quality_checks >> End_execution
+start_operator >> stage_events_to_redshift
+start_operator >> stage_songs_to_redshift
+stage_events_to_redshift >> load_songplays_table
+stage_songs_to_redshift >> load_songplays_table
+load_songplays_table >> load_song_dimension_table
+load_songplays_table >> load_user_dimension_table
+load_songplays_table >> load_artist_dimension_table
+load_songplays_table >> load_time_dimension_table
+load_song_dimension_table >> run_quality_checks
+load_user_dimension_table >> run_quality_checks
+load_artist_dimension_table >> run_quality_checks
+load_time_dimension_table >> run_quality_checks
+run_quality_checks >> end_operator
