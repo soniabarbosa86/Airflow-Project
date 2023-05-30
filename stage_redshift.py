@@ -1,6 +1,7 @@
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
+from airflow.contrib.hooks.aws_hook import AwsHook
 
 
 
@@ -70,6 +71,7 @@ The parameters are as follows:
             """
             Definition of the execute method for this operator by retrieving the AWS credentials with an AWS hook and use PostGres Hook to connect to Redshift.
             """
+            
             aws_hook = AwsHook(self.aws_credentials_id)
             credentials = aws_hook.get_credentials()
             redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
